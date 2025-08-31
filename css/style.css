@@ -1,0 +1,398 @@
+/* Estilos gerais */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav img {
+    height: 50px;
+    margin-right: 15px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+nav h1 {
+    background: linear-gradient(45deg, #fd1d1d, #fcb045, #833ab4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 60px 30px;
+    background: linear-gradient(135deg, rgba(131, 58, 180, 0.95) 0%, rgba(253, 29, 29, 0.95) 50%, rgba(252, 176, 69, 0.95) 100%);
+    border-radius: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.hero-section > * {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section h2 {
+    background: linear-gradient(45deg, #ffffff, #fcb045);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 3em;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.hero-section p {
+    font-size: 1.2em;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    opacity: 0.95;
+    color: #ffffff;
+}
+
+.hero-section button {
+    background: linear-gradient(45deg, #fd1d1d, #fcb045);
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    font-size: 1.3em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 20px rgba(253, 29, 29, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.hero-section button:hover::before {
+    left: 100%;
+}
+
+.hero-section button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(253, 29, 29, 0.6);
+}
+
+.hero-section a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    display: block;
+    margin-top: 15px;
+    transition: color 0.3s ease;
+}
+
+.hero-section a:hover {
+    color: #fcb045;
+    text-decoration: underline;
+}
+
+.how-it-works-section,
+.testimonials-section,
+.chat-section {
+    background: linear-gradient(135deg, rgba(131, 58, 180, 0.95) 0%, rgba(253, 29, 29, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.how-it-works-section h3,
+.testimonials-section h3,
+.chat-section h3 {
+    background: linear-gradient(45deg, #ffffff, #fcb045);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.how-it-works-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.how-it-works-section ul li {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border-left: 4px solid #fcb045;
+    transition: transform 0.3s ease;
+    color: #ffffff;
+}
+
+.how-it-works-section ul li:hover {
+    transform: translateX(10px);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.testimonials-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.testimonials-section h3 {
+    grid-column: 1 / -1;
+}
+
+.testimonials-section .testimonial {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(252, 176, 69, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.testimonials-section .testimonial:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(252, 176, 69, 0.4);
+    border-color: rgba(252, 176, 69, 0.6);
+}
+
+.testimonials-section .testimonial .testimonial-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #fcb045;
+    box-shadow: 0 4px 15px rgba(252, 176, 69, 0.3);
+}
+
+.testimonials-section .testimonial p:first-of-type {
+    font-weight: bold;
+    color: #fcb045;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+.testimonials-section .testimonial p:nth-of-type(2) {
+    color: #ffd700;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.testimonials-section .testimonial p:last-child {
+    color: #ffffff;
+}
+
+.chat-section .chat-messages {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 2px solid rgba(252, 176, 69, 0.3);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}#fcb045 rgba(0, 0, 0, 0.5);
+}
+
+.chat-section .chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-section .chat-messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.chat-section .chat-messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #fd1d1d, #fcb045);
+    border-radius: 4px;
+}
+
+.chat-section .chat-messages p {
+    margin: 8px 0;
+    padding: 8px 12px;
+    background: rgba(131, 58, 180, 0.3);
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    color: #ffffff;
+}
+
+.chat-section .chat-messages p:hover {
+    background: rgba(131, 58, 180, 0.6);
+}
+
+.chat-section .chat-input {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.chat-section .chat-input input {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: 2px solid rgba(252, 176, 69, 0.5);
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.chat-section .chat-input input:focus {
+    outline: none;
+    border-color: #fcb045;
+    box-shadow: 0 0 10px rgba(252, 176, 69, 0.5);
+}
+
+.chat-section .chat-input input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.chat-section .chat-input button {
+    background: linear-gradient(45deg, #fd1d1d, #fcb045);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(253, 29, 29, 0.4);
+}
+
+.chat-section .chat-input button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(253, 29, 29, 0.6);
+}
+
+.chat-section p:last-of-type {
+    text-align: center;
+    font-weight: bold;
+    color: #fcb045;
+    font-size: 1.1em;
+}
+
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    text-align: center;
+    color: #ffffff;
+    margin-top: 40px;
+    border-top: 2px solid rgba(252, 176, 69, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .hero-section h2 {
+        font-size: 2em;
+    }
+    
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .how-it-works-section,
+    .testimonials-section,
+    .chat-section {
+        padding: 25px;
+    }
+    
+    nav h1 {
+        font-size: 2em;
+    }
+    
+    .testimonials-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section h2 {
+        font-size: 1.5em;
+    }
+    
+    .hero-section button {
+        padding: 15px 25px;
+        font-size: 1.1em;
+    }
+    
+    .chat-section .chat-input {
+        flex-direction: column;
+    }
+    
+    .chat-section .chat-input button {
+        align-self: stretch;
+    }
+}
+
+
