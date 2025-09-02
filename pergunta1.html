@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JukaSpy — Carregando Análise</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+        }
+
+        .loading-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #7928ca, #ff0080);
+            position: relative;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite ease-in-out;
+            box-shadow: 0 0 30px rgba(121, 40, 202, 0.5);
+        }
+
+        .loading-circle::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 50%;
+            background: rgba(13, 13, 13, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-circle .logo {
+            position: relative;
+            z-index: 2;
+            width: 60px;
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+
+        .loading-text {
+            color: #ffffff;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .loading-description {
+            color: #cccccc;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(255, 81, 47, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 81, 47, 0.6);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .footer-links {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ff0080;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="./assets/images/logo.png" alt="JukaSpy Logo">
+            <h1>JukaSpy</h1>
+        </nav>
+    </header>
+
+    <main>
+        <div class="loading-container">
+            <div class="loading-circle">
+                <img src="./assets/images/logo.png" alt="JukaSpy" class="logo">
+            </div>
+            
+            <h2 class="loading-text">Quase lá...</h2>
+            
+            <p class="loading-description">
+                Para continuar, responda 2<br>
+                perguntas rápidas para ajudar nossa<br>
+                IA a direcionar melhor sua<br>
+                investigação.
+            </p>
+            
+            <a href="pergunta2.html" class="continue-btn">Continuar</a>
+        </div>
+    </main>
+
+    <div class="footer-links">
+        <a href="#">Termos de Uso</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Afiliados</a>
+    </div>
+
+    <footer>
+        <p>Copyright 2025©. JukaSpy. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
+
