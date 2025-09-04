@@ -1,86 +1,494 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Resultados da Pesquisa</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JukaSpy — Resultados da Análise</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .analysis-header {
+            margin-bottom: 40px;
+        }
+
+        .analysis-title {
+            color: #ffffff;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .username-badge {
+            background: linear-gradient(45deg, #ff0080, #ff512f);
+            color: #ffffff;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.3);
+        }
+
+        .status-indicator {
+            color: #00ff00;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .status-icon {
+            font-size: 1.5em;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: rgba(13, 13, 13, 0.9);
+            border: 2px solid rgba(121, 40, 202, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            min-height: 400px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-card:hover {
+            border-color: #ff0080;
+            box-shadow: 0 15px 40px rgba(255, 0, 128, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ff0080;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+
+        .card-icon {
+            font-size: 1.8em;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ff0080;
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+        }
+
+        .profile-info p {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .profile-info strong {
+            color: #ff0080;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 0, 128, 0.3);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-blur {
+            filter: blur(8px);
+        }
+
+        .premium-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff0080;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1em;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .conversations-card {
+            grid-column: 1 / -1;
+            background: rgba(13, 13, 13, 0.9);
+            border: 2px solid rgba(121, 40, 202, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .conversation-item {
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid rgba(255, 0, 128, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            position: relative;
+            filter: blur(2px);
+            opacity: 0.7;
+        }
+
+        .conversation-preview {
+            color: #cccccc;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .premium-banner {
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 15px 40px rgba(255, 81, 47, 0.4);
+        }
+
+        .premium-banner h3 {
+            color: #ffffff;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .premium-banner p {
+            color: #ffffff;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .premium-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 18px 45px;
+            font-size: 1.3em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .premium-btn:hover {
+            background: #ffffff;
+            color: #ff512f;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-state {
+            color: #ffaa00;
+            font-style: italic;
+        }
+
+        .error-state {
+            color: #ff4444;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .result-card {
+                padding: 25px;
+                min-height: auto;
+            }
+            
+            .analysis-title {
+                font-size: 2em;
+            }
+            
+            .photos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .premium-banner {
+                padding: 30px 20px;
+            }
+            
+            .premium-banner h3 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="progress-bar"></div>
+    <header>
+        <nav>
+            <img src="./assets/images/logo.png" alt="JukaSpy Logo">
+            <h1>JukaSpy</h1>
+        </nav>
+    </header>
 
-  <div class="search-container" style="text-align:center; margin-top:20px;">
-    <input type="text" id="username" placeholder="Digite o @ do Instagram" style="padding:10px; width:250px;">
-    <button onclick="searchInstagram()" style="padding:10px 20px;">Pesquisar</button>
-  </div>
+    <main>
+        <div class="results-container">
+            <div class="analysis-header">
+                <h2 class="analysis-title">Análise Completa</h2>
+                <div class="username-badge" id="usernameBadge">@carregando...</div>
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-icon">⏳</span>
+                    <span>Analisando perfil...</span>
+                </div>
+            </div>
 
-  <!-- Console fake hacking -->
-  <div id="console-screen" class="hidden"></div>
+            <div class="results-grid" id="resultsGrid">
+                <!-- Conteúdo será inserido dinamicamente -->
+            </div>
 
-  <div class="resultados-grid" id="resultados"></div>
+            <div class="conversations-card" id="conversationsCard" style="display: none;">
+                <div class="card-title">
+                    <span class="card-icon">💬</span>
+                    Conversas Recuperadas
+                </div>
+                <div class="conversation-item">
+                    <strong>Conversa 1:</strong> Mensagens românticas com contato frequente...
+                    <div class="conversation-preview">"Oi amor, como foi seu dia? Estava pensando em você..."</div>
+                </div>
+                <div class="conversation-item">
+                    <strong>Conversa 2:</strong> Discussões sobre encontros e planos futuros...
+                    <div class="conversation-preview">"Que tal sairmos no fim de semana? Conheço um lugar incrível..."</div>
+                </div>
+                <div class="conversation-item">
+                    <strong>Conversa 3:</strong> Troca de fotos íntimas e conteúdo pessoal...
+                    <div class="conversation-preview">"🔒 Conteúdo Premium - Desbloqueie para ver as conversas completas"</div>
+                </div>
+            </div>
 
-  <script>
-    function fakeConsoleAnimation(callback) {
-      const consoleScreen = document.getElementById("console-screen");
-      consoleScreen.classList.remove("hidden");
-      const lines = [
-        "> Initializing system...",
-        "> Connecting to Instagram servers...",
-        "> Bypassing firewalls...",
-        "> Scanning profile data...",
-        "> Decrypting information...",
-        "> Extraction complete."
-      ];
-      let i = 0;
-      function typeLine() {
-        if (i < lines.length) {
-          const p = document.createElement("p");
-          p.classList.add("console-line");
-          p.textContent = lines[i];
-          consoleScreen.appendChild(p);
-          i++;
-          setTimeout(typeLine, 800);
-        } else {
-          setTimeout(() => {
-            consoleScreen.classList.add("hidden");
-            consoleScreen.innerHTML = "";
-            callback();
-          }, 2000);
+            <div class="premium-banner">
+                <h3>🔓 Desbloqueie o Relatório Completo</h3>
+                <p>Acesse todas as fotos, conversas completas, análise comportamental detalhada e muito mais!</p>
+                <button class="premium-btn" onclick="alert('Funcionalidade Premium em desenvolvimento!')">
+                    Upgrade para Premium
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Copyright 2025©. JukaSpy. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Captura os parâmetros da URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
         }
-      }
-      typeLine();
-    }
 
-    async function searchInstagram() {
-      const username = document.getElementById("username").value.trim();
-      if (!username) return alert("Digite um usuário válido");
+        const username = getUrlParameter('user') || getUrlParameter('username') || 'usuario_desconhecido';
+        
+        // Atualiza o badge do usuário
+        document.getElementById('usernameBadge').textContent = `@${username}`;
 
-      fakeConsoleAnimation(async () => {
-        try {
-          const res = await fetch(`https://www.instagram.com/${username}/?__a=1&__d=dis`);
-          if (!res.ok) throw new Error("Erro ao buscar perfil");
-          const data = await res.json();
+        // Simula carregamento e busca dados reais
+        async function loadProfile() {
+            try {
+                // Simula um delay de carregamento
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                const response = await fetch(`proxy.php?user=${username}`);
+                const data = await response.json();
 
-          let user = data.graphql.user;
-          const resultados = document.getElementById("resultados");
-          resultados.innerHTML = "";
+                if (data.error) {
+                    throw new Error(data.error);
+                }
 
-          const card = document.createElement("div");
-          card.classList.add("result-card");
-          card.innerHTML = `
-            <img src="${user.profile_pic_url_hd}" alt="Foto de perfil">
-            <h2>@${user.username}</h2>
-            <p>${user.biography || ""}</p>
-            <p><strong>Seguidores:</strong> ${user.edge_followed_by.count}</p>
-            <p><strong>Seguindo:</strong> ${user.edge_follow.count}</p>
-            <a href="https://instagram.com/${user.username}" target="_blank">Abrir no Instagram</a>
-          `;
-          resultados.appendChild(card);
-        } catch (err) {
-          alert("Não foi possível obter os dados do perfil.");
+                // Atualiza status
+                document.getElementById('statusIndicator').innerHTML = `
+                    <span class="status-icon">✅</span>
+                    <span>Análise concluída com sucesso</span>
+                `;
+
+                // Cria o grid de resultados
+                const resultsGrid = document.getElementById('resultsGrid');
+                resultsGrid.innerHTML = `
+                    <div class="result-card">
+                        <div class="card-title">
+                            <span class="card-icon">👤</span>
+                            Informações Básicas
+                        </div>
+                        <img src="${data.profilePicUrl || './assets/images/default-avatar.png'}" alt="${data.username}" class="profile-photo" onerror="this.src='./assets/images/default-avatar.png'">
+                        <div class="profile-info">
+                            <p><strong>Nome:</strong> ${data.fullName || 'Não informado'}</p>
+                            <p><strong>Bio:</strong> ${data.biography || 'Sem biografia'}</p>
+                            <p><strong>Seguidores:</strong> ${formatNumber(data.followers)}</p>
+                            <p><strong>Seguindo:</strong> ${formatNumber(data.following)}</p>
+                            <p><strong>Posts:</strong> ${formatNumber(data.posts || 0)}</p>
+                            <p><strong>Status:</strong> ${data.isPrivate ? 'Perfil Privado' : 'Perfil Público'}</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="card-title">
+                            <span class="card-icon">📊</span>
+                            Tendências do Perfil
+                        </div>
+                        <div class="profile-info">
+                            <p><strong>Atividade:</strong> ${getActivityLevel(data.followers)}</p>
+                            <p><strong>Horário preferido:</strong> 18h - 22h</p>
+                            <p><strong>Tipo de conteúdo:</strong> ${getContentType(data.biography)}</p>
+                            <p><strong>Interações:</strong> ${getEngagementLevel(data.followers)}</p>
+                            <p><strong>Status:</strong> Online frequentemente</p>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="card-title">
+                            <span class="card-icon">📸</span>
+                            Fotos do Perfil
+                        </div>
+                        <div class="photos-grid">
+                            <div class="photo-item">
+                                <img src="${data.profilePicUrl || './assets/images/sample1.jpg'}" alt="Foto 1" onerror="this.src='./assets/images/sample1.jpg'">
+                            </div>
+                            <div class="photo-item">
+                                <img src="./assets/images/sample2.jpg" alt="Foto 2" class="photo-blur">
+                                <div class="premium-overlay">
+                                    <span>🔒</span>
+                                    <span>Premium</span>
+                                </div>
+                            </div>
+                            <div class="photo-item">
+                                <img src="./assets/images/sample3.jpg" alt="Foto 3" class="photo-blur">
+                                <div class="premium-overlay">
+                                    <span>🔒</span>
+                                    <span>Premium</span>
+                                </div>
+                            </div>
+                            <div class="photo-item">
+                                <img src="./assets/images/sample4.jpg" alt="Foto 4" class="photo-blur">
+                                <div class="premium-overlay">
+                                    <span>🔒</span>
+                                    <span>Premium</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Mostra a seção de conversas
+                document.getElementById('conversationsCard').style.display = 'block';
+
+            } catch (error) {
+                console.error('Erro ao carregar perfil:', error);
+                
+                // Mostra erro
+                document.getElementById('statusIndicator').innerHTML = `
+                    <span class="status-icon">❌</span>
+                    <span>Erro na análise</span>
+                `;
+
+                document.getElementById('resultsGrid').innerHTML = `
+                    <div class="error-state">
+                        <h3>Erro ao carregar perfil</h3>
+                        <p>${error.message}</p>
+                        <p>Verifique se o nome de usuário está correto e tente novamente.</p>
+                    </div>
+                `;
+            }
         }
-      });
-    }
-  </script>
+
+        function formatNumber(num) {
+            if (!num) return '0';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function getActivityLevel(followers) {
+            if (followers > 100000) return 'Muito ativo (posts diários)';
+            if (followers > 10000) return 'Ativo (posts regulares)';
+            if (followers > 1000) return 'Moderadamente ativo';
+            return 'Pouco ativo';
+        }
+
+        function getContentType(bio) {
+            if (!bio) return 'Lifestyle, geral';
+            const lowerBio = bio.toLowerCase();
+            if (lowerBio.includes('fitness') || lowerBio.includes('gym')) return 'Fitness, saúde';
+            if (lowerBio.includes('travel') || lowerBio.includes('viagem')) return 'Viagens, aventuras';
+            if (lowerBio.includes('food') || lowerBio.includes('comida')) return 'Culinária, food';
+            if (lowerBio.includes('music') || lowerBio.includes('música')) return 'Música, arte';
+            return 'Lifestyle, variado';
+        }
+
+        function getEngagementLevel(followers) {
+            if (followers > 50000) return 'Alta taxa de engajamento';
+            if (followers > 5000) return 'Boa taxa de engajamento';
+            return 'Taxa moderada de engajamento';
+        }
+
+        // Inicia o carregamento quando a página carregar
+        window.onload = function() {
+            loadProfile();
+        };
+    </script>
 </body>
 </html>
+

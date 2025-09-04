@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JukaSpy — Analisando Perfil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #5a00a0 0%, #12002b 100%);
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Bolhas de fundo */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 0, 128, 0.1);
+            border: 2px solid rgba(255, 0, 128, 0.3);
+            animation: float 6s ease-in-out infinite;
+            backdrop-filter: blur(5px);
+        }
+
+        .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 120px; height: 120px; top: 20%; right: 15%; animation-delay: 1s; }
+        .bubble:nth-child(3) { width: 100px; height: 100px; bottom: 20%; left: 20%; animation-delay: 2s; }
+        .bubble:nth-child(4) { width: 90px; height: 90px; bottom: 30%; right: 10%; animation-delay: 3s; }
+        .bubble:nth-child(5) { width: 110px; height: 110px; top: 50%; left: 50%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header {
+            background: rgba(13, 13, 13, 0.9);
+            padding: 15px 20px;
+            border-bottom: 2px solid #00ff00;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .logo h1 {
+            background: linear-gradient(45deg, #ff0080, #ff512f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 20px;
+            text-shadow: 0 0 10px #ff0080;
+        }
+
+        .status {
+            color: #00ff00;
+            font-size: 14px;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .console-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .console {
+            background: rgba(13, 13, 13, 0.95);
+            border: 2px solid rgba(0, 255, 0, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
+            position: relative;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .console::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 0, 0.03) 2px,
+                    rgba(0, 255, 0, 0.03) 4px
+                );
+            pointer-events: none;
+            border-radius: 18px;
+        }
+
+        .log-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.3s ease-in forwards;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        .log-line.error {
+            color: #ff4444;
+            text-shadow: 0 0 5px #ff4444;
+        }
+
+        .log-line.warning {
+            color: #ffaa00;
+            text-shadow: 0 0 5px #ffaa00;
+        }
+
+        .log-line.success {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .log-line.info {
+            color: #00aaff;
+            text-shadow: 0 0 5px #00aaff;
+        }
+
+        .log-line.purple {
+            color: #aa00ff;
+            text-shadow: 0 0 5px #aa00ff;
+        }
+
+        .timestamp {
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(51, 51, 51, 0.8);
+            border: 1px solid #00ff00;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00aa00);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px #00ff00;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .final-message {
+            text-align: center;
+            font-size: 24px;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+            margin: 20px 0;
+            animation: pulse 1s infinite;
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .cursor {
+            display: inline-block;
+            background: #00ff00;
+            width: 10px;
+            height: 16px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .glitch {
+            animation: glitch 0.3s;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @media (max-width: 768px) {
+            .console {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .log-line {
+                font-size: 12px;
+            }
+            
+            .final-message {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bolhas de fundo -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <div class="header">
+        <div class="logo">
+            <img src="./assets/images/logo.png" alt="JukaSpy">
+            <h1>JukaSpy</h1>
+        </div>
+        <div class="status">SISTEMA ATIVO</div>
+    </div>
+
+    <div class="console-container">
+        <div class="console" id="console">
+            <!-- Logs serão inseridos aqui dinamicamente -->
+        </div>
+    </div>
+
+    <div class="final-message" id="finalMessage">
+        >>> ACESSO CONCEDIDO <<<
+    </div>
+
+    <script>
+        const console_elem = document.getElementById('console');
+        const finalMessage = document.getElementById('finalMessage');
+        let logIndex = 0;
+
+        // Captura os parâmetros da URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const username = getUrlParameter('user') || getUrlParameter('username') || 'usuario_desconhecido';
+
+        const logs = [
+            { time: '09:59:47', message: 'Inicializando sistema...', type: 'info' },
+            { time: '09:59:48', message: 'Sincronizando com servidor... OK', type: 'success' },
+            { time: '09:59:49', message: `Buscando perfil: @${username}`, type: 'info' },
+            { time: '09:59:50', message: 'Perfil localizado... #######', type: 'success' },
+            { time: '09:59:51', message: 'Estabelecendo túnel seguro...', type: 'info' },
+            { time: '09:59:52', message: 'Conexão TLS 1.3 estabelecida', type: 'success' },
+            { time: '09:59:53', message: 'Validação Captcha... OK', type: 'success' },
+            { time: '09:59:54', message: 'Bypass de rate limiting...', type: 'warning' },
+            { time: '09:59:55', message: 'Gateway quebrado...', type: 'error' },
+            { time: '09:59:56', message: 'Limite de taxa atingido — aplicando retentativa exponencial...', type: 'warning' },
+            { time: '09:59:57', message: 'Aguardando cooldown...', type: 'info' },
+            { time: '09:59:58', message: 'Retentativa #1... OK', type: 'success' },
+            { time: '09:59:59', message: 'Retentativa #2... OK', type: 'success' },
+            { time: '10:00:00', message: 'Acesso autorizado ao banco de dados', type: 'purple' },
+            { time: '10:00:01', message: 'Coletando metadados...', type: 'info' },
+            { time: '10:00:02', message: 'Extraindo informações do perfil...', type: 'info' },
+            { time: '10:00:03', message: 'Normalizando pacotes...', type: 'info' },
+            { time: '10:00:04', message: 'Analisando padrões comportamentais...', type: 'purple' },
+            { time: '10:00:05', message: 'Conexão finalizada com sucesso.', type: 'success' }
+        ];
+
+        function addLog(log) {
+            const logLine = document.createElement('div');
+            logLine.className = `log-line ${log.type}`;
+            logLine.innerHTML = `<span class="timestamp">[${log.time}]</span>${log.message}`;
+            
+            console_elem.appendChild(logLine);
+            console_elem.scrollTop = console_elem.scrollHeight;
+
+            // Efeito glitch ocasional
+            if (Math.random() < 0.1) {
+                logLine.classList.add('glitch');
+            }
+        }
+
+        function addProgressBar(label, duration) {
+            const progressContainer = document.createElement('div');
+            progressContainer.innerHTML = `
+                <div style="color: #00aaff; margin: 10px 0;">${label}</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-${logIndex}"></div>
+                    <div class="progress-text">0%</div>
+                </div>
+            `;
+            console_elem.appendChild(progressContainer);
+
+            const progressFill = document.getElementById(`progress-${logIndex}`);
+            const progressText = progressContainer.querySelector('.progress-text');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressFill.style.width = progress + '%';
+                progressText.textContent = Math.floor(progress) + '%';
+            }, duration / 10);
+
+            logIndex++;
+            console_elem.scrollTop = console_elem.scrollHeight;
+        }
+
+        async function runHackingSequence() {
+            // Primeira fase de logs
+            for (let i = 0; i < 5; i++) {
+                await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 400));
+                addLog(logs[i]);
+            }
+
+            // Primeira barra de progresso
+            addProgressBar('Estabelecendo conexão segura...', 2000);
+            await new Promise(resolve => setTimeout(resolve, 2500));
+
+            // Segunda fase de logs
+            for (let i = 5; i < 10; i++) {
+                await new Promise(resolve => setTimeout(resolve, 600 + Math.random() * 300));
+                addLog(logs[i]);
+            }
+
+            // Segunda barra de progresso
+            addProgressBar('Coletando dados do perfil...', 3000);
+            await new Promise(resolve => setTimeout(resolve, 3500));
+
+            // Terceira fase de logs
+            for (let i = 10; i < logs.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 200));
+                addLog(logs[i]);
+            }
+
+            // Barra de progresso final
+            addProgressBar('Finalizando análise...', 2000);
+            await new Promise(resolve => setTimeout(resolve, 2500));
+
+            // Mensagem final
+            finalMessage.style.display = 'block';
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Redirecionar para a página de resultados
+            window.location.href = `resultados.html?user=${username}`;
+        }
+
+        // Iniciar a sequência quando a página carregar
+        window.onload = function() {
+            runHackingSequence();
+        };
+    </script>
+</body>
+</html>
+
